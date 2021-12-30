@@ -1,0 +1,263 @@
+body {
+	margin: 0;
+	padding: 0;
+}
+
+.xy-camera-wrapper {
+	width: 100vw;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.3);
+	position: fixed;
+	left: 0;
+	top: 0;
+	z-index: 2021;
+	box-sizing: border-box;
+}
+
+#xy-camera-box {
+	height: 100%;
+	width: 100%;
+	background-color: rgb(99, 96, 96);
+	box-sizing: border-box;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.xy-camera-to-video {
+	height: 100vh;
+	box-sizing: border-box;
+}
+
+.rotateActive {
+	transform: rotateY(180deg);
+}
+
+.xy-camera-close {
+	position: absolute;
+	padding: 3px;
+	right: 15px;
+	top: 15px;
+	width: 15px;
+	height: 15px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.xy-camera-reverse {
+	position: absolute;
+	right: 14px;
+	top: 50px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	transition: transform 0.5s;
+}
+
+.xy-camera-reverse.active {
+	right: 12px;
+}
+
+.xy-camera-reverse svg {
+	stroke: rgb(255, 255, 255);
+	stroke-width: 1;
+	width: 25px;
+	height: 25px;
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.xy-camera-close > svg {
+	stroke: rgb(255, 255, 255);
+	stroke-width: 2;
+	width: 15px;
+	height: 15px;
+	cursor: pointer;
+}
+
+.xy-camera-close > svg:active {
+	transform: scale(0.8);
+}
+
+.xy-camera-tools {
+	height: 90px;
+	position: absolute;
+	z-index: 3;
+	bottom: 0px;
+	width: 100vw;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background-color: rgba(59, 54, 54, 0.9);
+	box-shadow: 0 -2px 3px rgba(0, 0, 0, 0.5);
+}
+
+.xy-camera-tools-shoot {
+	display: none;
+	cursor: pointer;
+}
+
+.xy-camera-tools-shoot > span {
+	display: block;
+	background-color: #fff;
+	border: 6px solid rgba(80, 79, 79, 0.8);
+	border-radius: 50%;
+	padding: 20px;
+}
+
+.xy-camera-tools-shoot > span:active,
+.xy-camera-tools-cancel:active,
+.xy-camera-tools-sure:active {
+	transform: scale(0.95);
+	transition: transform 0.1s;
+}
+
+.xy-camera-tools-cancel,
+.xy-camera-tools-sure {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 30px;
+	height: 30px;
+	border: 1px solid #fff;
+	border-radius: 50%;
+	box-shadow: 0 0px 5px rgba(255, 255, 255, 0.3);
+	display: none;
+	cursor: pointer;
+}
+
+.xy-camera-tools-cancel {
+	margin-right: 50px;
+	padding: 3px;
+}
+
+.xy-camera-tools-sure {
+	padding: 3px;
+	margin-left: 50px;
+}
+
+.xy-camera-tools-cancel > svg {
+	width: 13px;
+	height: 13px;
+	stroke: #fff;
+	stroke-width: 2px;
+}
+
+.xy-camera-tools-sure > svg {
+	margin-top: 2px;
+	width: 20px;
+	height: 20px;
+	stroke: #fff;
+	stroke-width: 2px;
+}
+
+.xy-camera-img-wrapper {
+	z-index: 2;
+
+	display: none;
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 100vw;
+	height: 100vh;
+	background-color: #000;
+	align-items: center;
+	justify-content: center;
+}
+
+.xy-camera-img-wrapper img {
+	width: 100vw;
+	height: 100vh;
+}
+
+.xy-camera-video-wrapper {
+	display: none;
+	z-index: 2;
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 100vw;
+	height: 100vh;
+	background-color: #000;
+	align-items: center;
+	justify-content: center;
+}
+
+.xy-camera-showVideo {
+	height: 100vh;
+	box-sizing: border-box;
+}
+
+.xy-camera-tools-shoot-video {
+	display: none;
+	width: 50px;
+	height: 50px;
+	background-color: #fff;
+	border-radius: 50%;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
+}
+
+.video-wrapper {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.xy-camera-tools-shoot-video span {
+	display: block;
+	background-color: rgb(250, 6, 6);
+	transition: all 0.3s;
+	height: 42px;
+	width: 42px;
+	border-radius: 50%;
+}
+
+.xy-camera-tools-shoot-video span.active {
+	border-radius: 3px;
+	background-color: #f00;
+	width: 18px;
+	height: 18px;
+	padding: 0;
+	border: none;
+}
+
+.xy-camera-tools-shoot-video.active {
+	border-radius: 50%;
+	background-color: #fff;
+}
+
+.xy-camera-tools-video-time {
+	color: #fff;
+	display: none;
+	background-color: rgba(0, 0, 0, 0.5);
+	border-radius: 5px;
+	font-size: 13px;
+	padding: 2px 5px;
+	width: 45px;
+	position: absolute;
+	bottom: 100px;
+	text-align: center;
+}
+
+.xy-camera-loading {
+	text-align: center;
+	position: absolute;
+	top: calc(50% - 25px);
+	z-index: 333;
+	background-color: #fff;
+	padding: 15px;
+	border-radius: 5px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+.xy-camera-loading svg path {
+	fill: rgb(0, 60, 255);
+	width: 100px;
+	height: 100px;
+}
