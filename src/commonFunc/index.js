@@ -1,4 +1,4 @@
-let formatDate = function (date, symbol_date = '', symbol_time = '', type = 24) {
+let formatDate = function (date, symbol_date = '-', symbol_time = ':', type = 24) {
   /**
    * 格式化日期
    * @autor xy           作者
@@ -103,7 +103,27 @@ let dataURLtoFile = function (dataurl, filename, type = 'file') {
   }
 }
 
-let zipImg = function (file, maxSize, quality) {
+let randomId = function (length) {
+  /**
+   * 随机的ID生成器
+   * @autor xy      作者
+   * @param length  随机数长度
+  */
+  let ID = Number(Math.random().toString().substr(3, length) + Date.now()).toString(36);
+  ID = ID.split('');
+  ID.map((item, index) => {
+    let flag = Math.random().toString().substr(3, 1) % 2;
+
+    if (flag) {
+      //! 随机转化为大写
+      ID[index] = item.toUpperCase();
+    }
+  });
+
+  return ID.join('');
+}
+
+let zipImg = function (file, maxSize = 0, quality = 0.92) {
   /**
    * 图片压缩
    * @autor xy      作者
@@ -302,6 +322,7 @@ export const commonTools = {
   CNDateString,
   dataURLtoFile,
   zipImg,
+  randomId,
   xyRequest,
   uploadFile,
   pauseEvent

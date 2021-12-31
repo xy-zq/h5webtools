@@ -11,7 +11,7 @@ function webCamera(opt) {
   class OpenCamera {
     constructor(options) {
       this.type = options.type == 'video' ? 'video' : 'image';
-      this.isFile = options.isFile;
+      this.isFile = options.isFile ? options.isFile : false;
       this.facingMode = options.mode ? options.mode : 'user';
       this.audio = options.audio ? options.audio : false;
       this.callbackSuccess = options.success;

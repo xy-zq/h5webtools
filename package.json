@@ -1,6 +1,6 @@
 {
   "name": "h5webtools",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "jscdH5Tools",
   "private": false,
   "main": "./dist/h5webtools.js",
