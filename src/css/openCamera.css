@@ -29,7 +29,7 @@ body {
 	box-sizing: border-box;
 }
 
-.rotateActive {
+.xyRotateActive {
 	transform: rotateY(180deg);
 }
 
@@ -256,6 +256,7 @@ body {
 	align-items: center;
 	justify-content: center;
 }
+
 .xy-camera-loading svg path {
 	fill: rgb(0, 60, 255);
 	width: 100px;
