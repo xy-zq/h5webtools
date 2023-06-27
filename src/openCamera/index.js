@@ -4,15 +4,16 @@
  * @param {*} options 
  */
 export default function WebCamera(options) {
-  this.type = options.type == 'video' ? 'video' : 'image';
-  this.isFile = options.isFile ? options.isFile : true;
+  this.type = options.type === 'video' ? 'video' : 'image';
+  this.isFile = options.isFile ? options.isFile : false;
   this.facingMode = options.mode ? options.mode : 'user';
-  this.audio = options.audio ? options.audio : true;
+  this.audio = options.audio ? options.audio : false;
   this.callbackSuccess = options.success;
   this.cameraBox = '';
   this.video = '';
   this.canvas = '';
   this.context = '';
+  this.hasReverse = false;
   this.mediaStreamTrack = '';
   this.shootImage = '';
   this.recorder = '';
@@ -126,11 +127,27 @@ WebCamera.prototype = {
     this.cameraBox.className = 'xy-camera-wrapper';
     this.cameraBox.innerHTML = CONTENT;
 
+    history.pushState(null, null, document.URL);
+
+    this.closeCamera = this.closeCamera.bind(this);
+
+    /* 监听浏览器返回键 */
+    if (window.history && window.history.pushState) {
+      window.addEventListener('popstate', this.closeCamera, false);
+    }
+  },
+
+  /**
+   * 打开相机
+   */
+  openCamera() {
     /* 设置打开相机时候的动画 body 设置无法滚动 */
     this.cameraBox.style.transition = 'top 0.3s';
     document.body.style.overflow = 'hidden';
     document.body.appendChild(this.cameraBox);
     this.cameraBox.style.top = '100vh';
+
+    this.videoStream = '';
 
     /*   延时使渐变作用 */
     setTimeout(() => {
@@ -141,22 +158,6 @@ WebCamera.prototype = {
     this.canvas = document.querySelector('.xy-camera-to-canvas');
     this.context = this.canvas.getContext("2d");
 
-    history.pushState(null, null, document.URL);
-
-    this.closeCamera = this.closeCamera.bind(this);
-
-    /* 监听浏览器返回键 */
-    if (window.history && window.history.pushState) {
-      window.addEventListener('popstate', this.closeCamera, false);
-    }
-
-    this.openCamera();
-  },
-
-  /**
-   * 打开相机
-   */
-  openCamera() {
     if (this.type == 'image') {
       /* 照片 */
       document.querySelector('.xy-camera-tools-shoot').style.display = 'block';
@@ -166,7 +167,9 @@ WebCamera.prototype = {
     }
 
     window.xyCameraIsClosed = false;  /* 是否在视频流生成之前就关闭了拍照界面 */
+
     this.openSuccess = this.openSuccess.bind(this);
+
     this.openFiled = this.openFiled.bind(this);
 
     this.getUserMediaToPhoto({
@@ -218,17 +221,27 @@ WebCamera.prototype = {
    */
   closeCamera() {
     document.body.style.overflow = '';
+
     this.cameraBox.style.top = '100vh';
+
+    this.hasReverse = false;
 
     if (this.mediaStreamTrack) {
       this.mediaStreamTrack.getTracks().forEach(track => {
         track.stop();
       });
     }
+
     document.querySelector('.xy-camera-reverse').removeEventListener('click', this.reverseCamera);
+
     window.removeEventListener('popstate', this.closeCamera, false);
 
     window.xyCameraIsClosed = true;
+
+    if (this.type === 'video' && this.isRecord) {
+      this.finishRecord();
+      this.cancel();
+    }
 
     /* 0.3秒的动画执行完 再销毁组件 关闭摄像头 */
     setTimeout(() => {
@@ -271,9 +284,11 @@ WebCamera.prototype = {
       /* 前置摄像头翻转镜头 */
       if (self.facingMode == 'user') {
         document.querySelector('.xy-camera-to-video').classList.add('xyRotateActive');
+
         document.querySelector('.xy-camera-showVideo').classList.add('xyRotateActive');
       } else {
         document.querySelector('.xy-camera-to-video').classList.remove('xyRotateActive');
+
         document.querySelector('.xy-camera-showVideo').classList.remove('xyRotateActive');
       }
 
@@ -290,12 +305,14 @@ WebCamera.prototype = {
     if (this.type == 'image') {
       /* 将视频绘制到canvas上 */
       this.getImage = this.getImage.bind(this);
+
       document.querySelector('.xy-camera-tools-shoot').addEventListener('click', this.getImage);
     } else {
       /* 创建录制对象 */
       this.recorder = new window.MediaRecorder(this.mediaStreamTrack);
 
       let self = this;
+
       this.recorder.ondataavailable = (res) => {
         /* 录制的数据 */
         self.chunks = [];
@@ -310,6 +327,7 @@ WebCamera.prototype = {
       };
 
       this.startRecord = this.startRecord.bind(this);
+
       document.querySelector('.xy-camera-tools-shoot-video').addEventListener('click', this.startRecord);
     }
   },
@@ -340,6 +358,13 @@ WebCamera.prototype = {
    * 翻转摄像头
    */
   reverseCamera() {
+    if (this.hasReverse) {
+      /* 反转的图片翻转回来 */
+      this.context.translate(this.canvas.width, 0);
+      this.context.scale(-1, 1);
+      this.hasReverse = false;
+    }
+
     this.reverseTimes++;
     this.facingMode = this.facingMode == 'user' ? 'environment' : 'user';
     this.mediaStreamTrack.getTracks()[0] && this.mediaStreamTrack.getTracks()[0].stop();
@@ -384,11 +409,13 @@ WebCamera.prototype = {
       return;
     }
 
-    if (this.facingMode == 'user') {
+    if (this.facingMode == 'user' && !this.hasReverse) {
       /* 前置摄像头左右镜像翻转图片 */
       this.context.translate(this.canvas.width, 0);
       this.context.scale(-1, 1);
+      this.hasReverse = true;
     }
+
     this.context.drawImage(this.video, 0, 0, this.canvas.width, this.canvas.height);
 
     this.shootImage = this.canvas.toDataURL('image/jpg', 1.0);
@@ -397,6 +424,7 @@ WebCamera.prototype = {
     let img = document.querySelector('.xy-camera-showImg');
 
     img.parentNode.style.display = 'flex';
+
     img.src = this.shootImage;
 
     document.querySelector('.xy-camera-tools-cancel').style.display = 'flex';
@@ -473,6 +501,7 @@ WebCamera.prototype = {
 
     /* 停止录制 */
     this.recorder.stop();
+
     WRAPPER.removeEventListener('click', this.finishRecord);
 
     let video = document.querySelector('.xy-camera-showVideo');
@@ -561,7 +590,14 @@ WebCamera.prototype = {
 
       this.callbackSuccess(files);
 
+      this.recordTime = '00:00';
+
+      const TIME = document.querySelector('.xy-camera-tools-video-time');
+
+      TIME.style.display = 'none';
+
       this.chunks = [];
+
       this.closeCamera();
     }
   },

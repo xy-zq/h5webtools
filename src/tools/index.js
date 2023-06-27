@@ -113,6 +113,7 @@ XyTools.prototype = {
     else
       s.push("二十" + cn[DD % 10]);
     s.push("日");
+
     return s.join('');
   },
 
@@ -304,7 +305,7 @@ XyTools.prototype = {
       }
     });
 
-    return ID.slice(0, length > 32 ? length : 32).join('');
+    return ID.slice(0, length < 32 ? length : 32).join('');
   },
 
   /**
