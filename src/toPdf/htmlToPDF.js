@@ -25,8 +25,7 @@ function dataURLtoFile(dataurl, filename, type) {
     //return new Blob([u8arr],{type:mime});
 }
 
-
-export async function downloadPDF(ele, pdfName = 0, type = 0) {
+export default async function downloadPDF(ele, pdfName = 0, type = 0) {
     let eleW = ele.offsetWidth;// 获得该容器的宽
     let eleH = ele.offsetHeight;// 获得该容器的高
     let eleOffsetTop = ele.offsetTop;  // 获得该容器到文档顶部的距离

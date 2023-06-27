@@ -1,4 +1,4 @@
-function dragTo(opt) {
+export default function dragTo(opt) {
   /**
    * 拖拽元素到指定元素
    * @autor     xy            作者
@@ -349,5 +349,3 @@ function dragTo(opt) {
 
   return new XyDrag(opt);
 }
-
-export default dragTo;

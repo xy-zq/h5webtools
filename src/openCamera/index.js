@@ -3,7 +3,7 @@
  * 需要在 <https> | <localhost> 环境下 视频只支持 <chrome> 与 <FireFox> 均不支持 <IE>
  * @param {*} options 
  */
-export function WebCamera(options) {
+export default function WebCamera(options) {
   this.type = options.type == 'video' ? 'video' : 'image';
   this.isFile = options.isFile ? options.isFile : true;
   this.facingMode = options.mode ? options.mode : 'user';
@@ -591,3 +591,4 @@ WebCamera.prototype = {
     // return new Blob([u8arr],{type:mime});
   }
 }
+

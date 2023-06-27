@@ -1,14 +1,18 @@
 {
   "name": "h5webtools",
-  "version": "1.0.6",
-  "description": "jscdH5Tools",
+  "version": "1.0.9",
+  "description": "h5Tools",
   "private": false,
   "main": "./dist/h5webtools.js",
   "scripts": {
     "build": "webpack --config webpack.config.js"
   },
   "keywords": [
-    "h5"
+    "h5",
+    "h5Tools",
+    "camera",
+    "pdf",
+    "drag"
   ],
   "author": "xy",
   "license": "ISC",

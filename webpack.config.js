@@ -14,7 +14,7 @@ module.exports = {
     filename: "h5webtools.js", // 打包后得文件名
     path: path.resolve(__dirname, "dist"), // 路径必须是绝对路径
     globalObject: "this",
-    library: "jxcdH5Tools",
+    library: "h5Tools",
     libraryTarget: "umd",
     umdNamedDefine: true,
   },
