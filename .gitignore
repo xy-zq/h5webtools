@@ -2,6 +2,7 @@
 node_modules
 #压缩文件
 .zip
+dist
 
 # local env files
 .env.local

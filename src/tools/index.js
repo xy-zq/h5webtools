@@ -532,6 +532,7 @@ XyTools.prototype = {
 
   /**
    * getCalendar 1900-2100区间内的公历、农历互转
+   * @Author Jea杨(JJonline@JJonline.Cn) 
    * @param {*} date 
    * @returns 
    * @公历转农历：calendar.solar2lunar(1987,11,01);

@@ -1,6 +1,11 @@
+/**
+ * 拖拽元素到指定元素
+ * @param {*} opt 
+ * @returns 
+ */
 export default function dragTo(opt) {
   /**
-   * 拖拽元素到指定元素
+   * 
    * @autor     xy            作者
    * @param     originElemID  拖拽元素的 id
    * @param     targetElemID  拖拽目标元素的 id

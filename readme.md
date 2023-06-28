@@ -2,9 +2,9 @@
 
 常用函数工具、浏览器唤起摄像头拍照或录像、div 保存为 pdf、拖拽到指定盒子容器
 
-地址：[https://gitee.com/xyzq1314/common-tools]()
+地址：[gitee](https://gitee.com/xyzq1314/common-tools)
 
-当前版本：v1.1.0
+当前版本：v1.1.1
 
 更新时间：2023-06-27 17:15:00
 
@@ -255,12 +255,75 @@ $xy.IS(' 2333'); // true
 
 ##### web相机
 
+浏览器唤起摄像头 <拍照> 或 <摄像>功能
+
+需要在 <https> | <localhost> 环境下，录像只支持 <chrome> 与 <FireFox>
+
+###### 1. 使用的 Api 介绍
+
+***mediaDevices Api*** 
+
+**`mediaDevices`**  是 Navigator 只读属性，返回一个 [`MediaDevices`](https://developer.mozilla.org/zh-CN/docs/Web/API/MediaDevices) 对象，该对象可提供对相机和麦克风等媒体输入设备的连接访问，也包括屏幕共享。
+
+```javascript
+if (navigator.mediaDevices.getUserMedia) {
+    /* 最新标准API */
+    navigator.mediaDevices.getUserMedia(constraints).then(success).catch(error);
+} else if (navigator.webkitGetUserMedia) {
+    /* webkit核心浏览器 */
+    navigator.webkitGetUserMedia(constraints, success, error);
+} else if (navigator.mozGetUserMedia) {
+    /* firefox浏览器 */
+    navigator.mozGetUserMedia(constraints, success, error);
+} else if (navigator.getUserMedia) {
+    /* 旧版API */
+    navigator.getUserMedia(constraints, success, error);
+}
+```
+
+兼容性：https://developer.mozilla.org/zh-CN/docs/Web/API/Navigator/mediaDevices
+
+***MediaRecorder Api*** 
+
+**`MediaRecorder`** 是 [MediaStream Recording API](https://developer.mozilla.org/zh-CN/docs/Web/API/MediaStream_Recording_API) 提供的用来进行媒体轻松录制的接口，他需要通过调用 [`MediaRecorder()`](https://developer.mozilla.org/zh-CN/docs/Web/API/MediaRecorder/MediaRecorder) 构造方法进行实例化。
+
+兼容性：https://developer.mozilla.org/zh-CN/docs/Web/API/MediaRecorder
+
+###### 2. 引入
+
 ```javascript
 import { WebCamera } from 'h5webtools';
+
 import 'h5webtools/dist/css/openCamera.css';
 ```
 
+###### 3. 创建相机实例
 
+```javascript
+var camera = new WebCamera({
+		type: 'image',
+		isFile: true,
+		mode: 'user',
+		audio: false,
+		success: (res) => {
+			$xy.log('~相机返回', res);
+		}
+});
+```
+
+| 参数    | 说明                                       | 默认值 | 是否必填 |
+| :------ | ------------------------------------------ | :----: | :------: |
+| type    | Image 或 video 拍照或录像                  | image  |    ❌     |
+| isFile  | 是否返回文件 File (false 返回 base64)      |  true  |    ❌     |
+| mode    | 摄像头模式 前置(user)或者后置(environment) |  user  |    ❌     |
+| audio   | 录像是否录制音频                           |  true  |    ❌     |
+| success | 点击保存成功回调                           |   🈚️    |    ✅     |
+
+###### 4. 打开相机
+
+```javascript
+camera.openCamera();
+```
 
 ##### 拖拽功能
 
@@ -268,9 +331,37 @@ import 'h5webtools/dist/css/openCamera.css';
 import { dragTo } from 'h5webtools';
 ```
 
+```javascript
+var drag = new dragTo({
+		originElemID: 'origin',
+		targetElemID: 'target',
+		duration: '',
+		success: (res) => {},
+		fail: (err) => {}
+});
+```
+
+支持 web 与 移动端
+
+| 参数         | 说明                          | 默认值 | 是否必填 |
+| :----------- | ----------------------------- | :----: | :------: |
+| originElemID | 拖拽元素的 id                 |   🈚️    |    ✅     |
+| targetElemID | 拖拽到目标元素的 id           |   🈚️    |    ✅     |
+| duration     | 长按元素多久开始执行拖拽 (ms) |  null  |    ❌     |
+| success      | 拖拽成功的回调函数            |   🈚️    |    ✅     |
+| fail         | 拖拽失败的回调函数            |   🈚️    |    ✅     |
+
 ##### 转 PDF
 
 ```javascript
 import { downloadPDF } from 'h5webtools';
 ```
 
+```javascript
+downloadPDF(element, pdfName); // File
+```
+
+| 参数    | 说明               | 默认值 | 是否必填 |
+| :------ | ------------------ | :----: | :------: |
+| element | 转换的元素 Element |   🈚️    |    ✅     |
+| pdfName | pdfName 名称       |   0    |    ❌     |
