@@ -2,7 +2,7 @@
 
 常用函数工具、浏览器唤起摄像头拍照或录像、div 保存为 pdf、拖拽到指定盒子容器
 
-地址：[gitee](https://gitee.com/xyzq1314/common-tools)
+地址：[gitbub](https://github.com/xyzq1314/h5webtools.git) [gitee](https://gitee.com/xyzq1314/common-tools)
 
 当前版本：v1.1.1
 
